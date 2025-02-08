@@ -16,8 +16,8 @@ db.sqlite3
 .env
 
 # Ignore static & media files
-staticfiles/
-media/
+# staticfiles/
+# media/
 
 # Ignore VS Code and PyCharm settings
 .vscode/
