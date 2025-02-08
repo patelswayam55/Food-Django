@@ -17,8 +17,15 @@ db.sqlite3
 
 # Ignore static & media files
 # staticfiles/
-# media/
+staticfiles/
+!static/
 
 # Ignore VS Code and PyCharm settings
 .vscode/
 .idea/
+
+# Ignore media files (if applicable)
+media/
+
+# Keep templates
+!templates/
