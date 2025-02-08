@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .main {
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background: #fff;
+    }
+
+    .cart2 {
+        width: 271px;
+        height: 256px;
+        background-image: url({% static 'images/car2.png' %});
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin-right: 53px;
+    }
+
+    .h {
+        margin-top: 24px;
+        font-size: 20px;
+        color: #535665;
+        font-weight: 600;
+    }
+
+    .h1 {
+        margin-top: 8px;
+        color: #7e808c;
+    }
+
+    .btn {
+        margin-top: 30px;
+        padding: 11px 20px;
+        text-transform: uppercase;
+        background-color: #fc8019;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        border: 0;
+        outline: 0;
+        font-size: 15px;
+        text-align: center;
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+        transition: transform .8s cubic-bezier(.2, 1, .2, 1);
+    }
+    .btn a{
+        text-decoration: none;
+        color: white;
+    }
+</style>
+
+<body>
+    <div class="main">
+        <div class="cart2">
+            
+        </div>
+        <div class="h">Your Cart is empty</div>
+        <div class="h1">You can go to home page to view more</div>
+        <div class="btn"><a href="{% url 'cart' %}">See other items</a></div>
+    </div>
+</body>
+
+</html>

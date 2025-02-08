@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/payment.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    #checkoutItems {
+      margin-top: 20px;
+    }
+
+    .labels {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+
+    .item p {
+      margin: 0;
+    }
+
+    .itemName,
+    .itemPrice,
+    .itemQ {
+      flex-basis: 33.33%;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Order Details</h1>
+    <div id="checkoutItems">
+      <!-- Predefined HTML structure for displaying item labels -->
+      <div class="header">
+        <p class="itemName">Item Name</p>
+        <p class="itemPrice">Price</p>
+        <p class="itemQ">Quantity</p>
+      </div>
+      <div class="labels">
+        <p class="itemName">Item Name</p>
+        <p class="itemPrice">Item Price</p>
+        <p class="itemQ">Quantity</p>
+      </div>
+    </div>
+    <h1></h1>
+
+    <form id="paymentForm" action="" method="get">
+      <p class="amount">To Pay:</p>
+      <label for="amount">Address:</label>
+      <input type="text" id="address" name="amount" required>
+      <br>
+      <label for="mobile">Mobile No.:</label>
+      <input type="tel" id="mobile" pattern="[0-9]{10}" name="Mobile No." required>
+      <br>
+      <button type="submit" id="payButton">Place Order</button>
+    </form>
+    <!-- // <button type="submit" id="payButton" onclick="startPayment()">Pay</button> -->
+
+  </div>
+  <script>
+    document.getElementById('payButton').addEventListener('click', function () {
+      event.preventDefault(); // Prevent form submission
+
+      // Get form values
+      var address = document.getElementById('address').value;
+      var mobile = document.getElementById('mobile').value;
+
+      // Store data in local storage
+      localStorage.setItem('address', address);
+      localStorage.setItem('mobile', mobile);
+
+      if (validatePayment()) {
+        // Start payment process
+        startPayment();
+      } else {
+        // Handle invalid payment
+        console.log('Payment validation failed');
+      }
+    });
+
+    var total = JSON.parse(localStorage.getItem("price"));
+    console.log(typeof total)
+    console.log(total)
+
+    function startPayment() {
+
+      var options = {
+        key: 'rzp_test_8ydfJQKGSKoloz',
+        amount: total * 100, // example amount in paisa (e.g., 50000 paisa = Rs 500)
+        currency: 'INR',
+        name: 'BILL',
+        description: 'Test Transaction',
+        image: 'images.png',
+        handler: function (response) {
+          var paymentId = response.razorpay_payment_id;
+          sessionStorage.setItem('paymentId', paymentId);
+          alert('Payment successful: ' + paymentId);
+          window.location.href = "{% url 'thankyou' %}";
+        },
+        prefill: {
+          name: 'Test User',
+          email: 'test@example.com'
+        },
+        theme: {
+          color: '#F79F1F'
+        }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.open();
+    }
+    // Retrieve stored items from local storage
+    var storedItems = localStorage.getItem('itemsForCheckout');
+
+    // Check if there are stored items
+    if (storedItems) {
+      // Parse stored items as JSON
+      var itemsForCheckout = JSON.parse(storedItems);
+
+      // Get the checkoutItems container
+      var checkoutItemsDiv = document.getElementById('checkoutItems');
+
+      // Get the labels container
+      var labelsDiv = checkoutItemsDiv.querySelector('.labels');
+
+      // Loop through stored items and populate the checkoutItems container
+      itemsForCheckout.forEach((item) => {
+        // Create a new div for each item
+        var itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+
+        // Add item details to the item div
+        itemDiv.innerHTML = `
+                    <p class="itemName">${item.name}</p>
+                    <p class="itemPrice">${item.price}</p>
+                    <p class="itemQ">${item.quantity}</p>`;
+
+        // Append the item div to the checkoutItems container
+        checkoutItemsDiv.appendChild(itemDiv);
+      });
+
+      // Remove the labels container
+      checkoutItemsDiv.removeChild(labelsDiv);
+    } else {
+      // No items found in local storage, display a message
+      document.getElementById('checkoutItems').innerHTML = '<p>No items found for checkout.</p>';
+    }
+
+    var t = document.querySelector('.amount');
+    t.textContent += '  ' + total;
+
+    function validatePayment() {
+      // Validate form fields
+      var mobileNo = document.getElementById("mobile").value;
+
+      // Check if mobile number is not filled or if its length is not 10
+      if (mobileNo === "" || mobileNo.length !== 10) {
+        alert("Please fill in all details and ensure the mobile number is exactly 10 digits long.");
+        return false; // Prevent form submission
+      }
+      return true; // Proceed with payment if validation passes
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Signup</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+                <small class="error">{{ form.username.errors }}</small>
+            </div>
+            <div class="form-group">
+                <label for="id_password1">Password:</label>
+                {{ form.password1 }}
+                <small class="error">{{ form.password1.errors }}</small>
+            </div>
+            <div class="form-group">
+                <label for="id_password2">Confirm Password:</label>
+                {{ form.password2 }}
+                <small class="error">{{ form.password2.errors }}</small>
+            </div>
+            <input type="submit" value="Signup">
+        </form>
+    </div>
+    <script>
+
+        {% for message in messages %}
+          // Check if the message is a success message
+          {% if message.tags == 'success' %}
+              // Display a popup message
+              alert("{{ message }}");
+              window.location.href = "{% url 'login' %}";
+          {% endif %}
+        {% endfor %}
+    </script>
+</body>
+</html>

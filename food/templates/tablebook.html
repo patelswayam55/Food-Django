@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Orders</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- custom css file cdn link  -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        .main1 {
+            padding: 10px;
+            position: relative;
+            top: 100px;
+        }
+
+        .main2 {
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 13px;
+            margin: 5px;
+            position:relative;
+            
+        }
+
+        .t {
+            float: right;
+            position: absolute;
+            top: 8px;
+            right: 20px;
+            color: #535665;
+            font-size: 14px;
+        }
+        ul{
+            list-style-type: none;
+           
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+
+        <a href="#" class="logo"> <i class="fas fa-utensils"></i> Food Point </a>
+
+        <form action="" class="search-form">
+            <input type="search" name="" placeholder="search here..." id="searchBox">
+            <label for="searchBox" class="fas fa-search"></label>
+        </form>
+
+        <div class="icons">
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-share" id="theme-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-bars" id="menu-btn"></div>
+        </div>
+
+        <nav class="navbar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'booking' %}">Booking</a>
+          
+        </nav>
+    </header>
+    <div class="main1">
+        {% for i in data %}
+        <div class="main2">
+            <strong>Food Point</strong><br>
+            <strong style="color:green">Table Status - Confirmed</strong><br>
+            <p>Date:  {{ i.booking_date }} At {{ i.booking_time }}</p><br>
+            <p>Mobile Number:{{ i.mobile_number }}</p><br>
+            <p>Gauest: {{i.number_of_people}}</p><br>
+          
+            {% comment %} <strong>Items Ordered:</strong><br>
+            <ul>
+                {% for item in order.orderitem_set.all %}
+                <li>{{ item.item_name }} x {{ item.quantity }}</li>
+                {% endfor %}
+            </ul>
+            <p class="t"><b>Total Paid:</b> <span>&#8377</span>{{ order.total_payment }}</p>
+        </div> {% endcomment %}
+    </div>
+        {% empty %}
+        <p>No results found</p>
+        {% endfor %}
+    </div>
+    
+    
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+</html>

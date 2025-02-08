@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Ordering Food</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .button {
+            display: inline-block;
+            height: 50px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            text-align: center;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .demo {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Thank You for Ordering!</h1>
+        <!-- Address and Mobile Number -->
+        <h2 style="text-align: center;">Food Point Invoice</h2>
+
+        <p>Order ID: <span id="oid"></span> </p>
+        <p>Order placed at: <span id="otime"></span></p>
+        <p> Customer Details:</p>
+        <p>Mobile Number: <span id="mobile"></span></p>
+        <p>Address: <span id="address"></span></p>
+
+
+        <!-- Total Payment and ID -->
+        <p>Total Payment: <span id="totalPayment"></span></p>
+        <p>Payment ID: <span id="pid"></span></p>
+
+
+        <p style="text-align: center;">Your order has been received and is being processed.</p>
+        <p style="text-align: center;">We appreciate your business and look forward to serving you!</p>
+
+        <div class="demo">
+            <button onclick="printInvoice()" class="button">Print Invoice</button>
+            <button onclick="saveToDatabase()" class="button">Continue Shopping</button>
+        </div>
+
+    </div>
+    <script>
+        var address = localStorage.getItem('address');
+        var mobile = localStorage.getItem('mobile');
+        var totalPayment = localStorage.getItem('price');
+        var paymentID = sessionStorage.getItem('paymentId');
+        console.log(address)
+
+        // Display data on the thank you page
+        document.getElementById('address').innerText = address;
+        document.getElementById('mobile').innerText = mobile;
+        document.getElementById('totalPayment').innerText = totalPayment;
+        document.getElementById('pid').innerText = paymentID;
+
+        function printInvoice() {
+            window.print();
+        }
+
+        function generateOrderID() {
+            // Generate a unique order ID using current timestamp and a random number
+            const randomNum = Math.floor(10000000 + Math.random() * 90000000);
+            return randomNum;
+        }
+        function generateTime() {
+            const timestamp = new Date(); // Get current timestamp
+            const formattedTimestamp = timestamp.toISOString(); // Convert to ISO 8601 format
+            return formattedTimestamp;
+        }
+        var t = generateTime();
+        var orderId = generateOrderID();
+        document.getElementById('oid').innerHTML = " " + orderId;
+        document.getElementById('otime').innerHTML = " " + t;
+
+
+        // function saveToDatabase() {
+        //     var orderData = {
+        //         address: address,
+        //         mobile: mobile,
+        //         totalPayment: totalPayment,
+        //         pid: paymentID,
+        //         orderId: orderId,
+        //         time: t,
+        //     };
+        //     // Convert orderData object to query string
+        //     var queryString = Object.keys(orderData).map(key => key + '=' + encodeURIComponent(orderData[key])).join('&');
+
+        //     // Send data to PHP script using GET request
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("GET", "adress.php?" + queryString, true); // Specify the URL of your demo.php script with query string
+        //     xhr.onreadystatechange = function () {
+        //         if (xhr.readyState === XMLHttpRequest.DONE) {
+        //             if (xhr.status === 200) {
+        //                 console.log("Data saved successfully");
+        //                 // alert("Data saved successfully"); // Show success message
+        //             } else {
+        //                 console.error("Error saving data:", xhr.status);
+        //                 alert("Error saving data"); // Show error message
+        //             }
+        //         }
+        //     };
+        //     xhr.send();
+        //     location.href = 'cart.html';
+        // }/
+  
+        
+        function saveToDatabase() {
+            var itemsOrdered = JSON.parse(localStorage.getItem('itemsForCheckout'));
+            var orderData = {
+                order_id: orderId,
+                order_time: t,
+                mobile_number: mobile,
+                address: address,
+                total_payment: totalPayment,
+                payment_id: paymentID,
+                items_ordered: itemsOrdered
+            };
+        
+            fetch('/save_order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Order saved successfully!');
+                    
+                    // Optionally, you can redirect the user to another page or perform other actions here.
+                } else {
+                    console.error('Failed to save order:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error saving order:', error);
+            });
+            window.location.href = "{% url 'home' %}";
+        }
+
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Booking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+        }
+        .button {
+            display:inline-block;
+            height: 50px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            text-align: center;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .demo{
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank You for Booking!</h1>
+         <!-- Address and Mobile Number -->
+         {% for i in data %}
+         <p>Place: Food Point</p>
+         <p>Mobile No:- <span id="name">{{i.mobile_number}}</span></p>
+         <p>Date: <span id="date">{{i.booking_date}}</span></p>
+ 
+         <!-- Total Payment and ID -->
+         <p>Time: <span id="time">{{i.booking_time}}</span></p>
+         <p>People: <span id="people">{{i.number_of_people}}</span></p>
+         {% endfor %}
+  
+      
+        <p>Your booking has been confirmed.</p>
+        <p>We look forward to welcoming you!</p>
+        
+        <div class="demo"> 
+        <button onclick="printInvoice()" class="button">Print Invoice</button>
+        <button onclick="backToHome()" class="button">Continue Shopping</button>
+    </div>
+    </div>
+    <script>
+
+        
+
+        function printInvoice() {
+            window.print();
+        }
+ 
+        function backToHome() {
+            window.location.href = "{% url 'home' %}";
+        }
+    </script>
+</body>
+</html>
