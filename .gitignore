@@ -1,31 +1,76 @@
-# Ignore Python compiled files
+# ==============================
+# 📌 Django Project .gitignore
+# ==============================
+
+# 🚀 Python-related ignores
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Ignore virtual environment
+# 🚀 Virtual Environment
 venv/
 env/
 
-# Ignore Django database file
+# 🚀 Django Database
 db.sqlite3
 
-# Ignore secrets & configuration files
+# 🚀 Environment Variables & Secrets
 *.env
 .env
 
-# Ignore static & media files
-# staticfiles/
+# 🚀 Ignore logs and temporary files
+*.log
+*.bak
+*.swp
+.DS_Store
+
+# ==============================
+# 📌 Static & Media Files
+# ==============================
+
+# 🚀 Ignore generated static files (but keep your static/ folder)
 staticfiles/
 !static/
 
-# Ignore VS Code and PyCharm settings
-.vscode/
-.idea/
-
-# Ignore media files (if applicable)
+# 🚀 Ignore uploaded media files
 media/
 
-# Keep templates
-!templates/
+# ==============================
+# 📌 Migrations Handling
+# ==============================
+
+# 🚀 Ignore migration cache files but keep actual migrations
+**/migrations/__pycache__/
+**/migrations/*.pyc
+**/migrations/*.pyo
+
+# ✅ Keep migration Python files
+!**/migrations/
+!**/migrations/*.py
+
+# ==============================
+# 📌 IDE & Editor-Specific Ignores
+# ==============================
+
+# 🚀 VS Code settings
+.vscode/
+
+# 🚀 PyCharm settings
+.idea/
+*.iml
+
+# 🚀 JetBrains settings
+*.ipr
+*.iws
+
+# ==============================
+# 📌 Node.js & Frontend (if applicable)
+# ==============================
+
+# 🚀 Ignore Node.js dependencies
+node_modules/
+
+# 🚀 Ignore built frontend files (if using React/Vue/Angular)
+dist/
+build/
