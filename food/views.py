@@ -138,3 +138,16 @@ def save_order(request):
 
 def rate_us(request):
     return render(request, 'RateUs.html')
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .models import PastOrder
+from .serializers import PastOrderSerializer
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_orders(request):
+    orders = PastOrder.objects.filter(user=request.user)  # Fetch only user's orders
+    serializer = PastOrderSerializer(orders, many=True)
+    return Response(serializer.data)

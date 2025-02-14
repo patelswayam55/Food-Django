@@ -7,8 +7,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['item_name', 'quantity']
 
 class PastOrderSerializer(serializers.ModelSerializer):
-    order_items = OrderItemSerializer(many=True, read_only=True)
+    order_items = OrderItemSerializer(many=True, read_only=True,source='orderitem_set')
 
     class Meta:
         model = PastOrder
-        fields = ['order_id', 'order_placed_at', 'mobile_number', 'address', 'total_payment', 'payment_id', 'order_items']
+        fields = ['id','order_id', 'order_placed_at', 'mobile_number', 'address', 'total_payment', 'payment_id', 'order_items']

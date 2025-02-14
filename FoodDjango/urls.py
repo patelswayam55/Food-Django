@@ -32,5 +32,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('booking/',views.booking,name='booking'),
     # path('book1/',views.book1,name='book1')
-    path('rateus/',views.rate_us)
+    path('rateus/',views.rate_us),
+    path('orders/', views.list_orders, name='list_orders')
 ]
